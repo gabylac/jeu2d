@@ -10,6 +10,8 @@ import javax.swing.JButton;
 import javax.swing.JTextField;
 import java.awt.Font;
 
+import controler.Controle;
+
 public class entreeJeu extends JFrame {
 
 	/**
@@ -21,11 +23,14 @@ public class entreeJeu extends JFrame {
 	 */
 	private JTextField txtIp;
 	/**
+	 * controle 
+	 */
+	private Controle Controle;
+	/**
 	 * clic sur le bouton start pour lancer le serveur
 	 */
 	private void btnStart_clic() {
-		(new Arene()).setVisible(true);
-		this.dispose();
+		this.Controle.evenementEntreeJeu("serveur");
 	}
 	/**
 	 * clic sur le bouton exit pour arreter l'application
@@ -37,13 +42,12 @@ public class entreeJeu extends JFrame {
 	 * clic sur le bouton connect pour se connecter à un serveur
 	 */
 	private void btnConnect_clic() {
-		(new ChoixJoueur()).setVisible(true);
-		this.dispose();
+		this.Controle.evenementEntreeJeu(this.txtIp.getText());
 	}
 	/**
 	 * Create the frame.
 	 */
-	public entreeJeu() {
+	public entreeJeu(Controle Controle) {
 		setResizable(false);
 		setTitle("Urban Marginal");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -107,5 +111,7 @@ public class entreeJeu extends JFrame {
 		txtIp.setBounds(69, 58, 107, 20);
 		contentPane.add(txtIp);
 		txtIp.setColumns(10);
+		
+		this.Controle = Controle;
 	}
 }
