@@ -10,6 +10,11 @@ import java.awt.Dimension;
 import javax.swing.JLabel;
 import javax.swing.ImageIcon;
 import javax.swing.JTextField;
+import javax.swing.SwingConstants;
+import java.awt.Cursor;
+import javax.swing.JOptionPane;
+
+import controler.Controle;
 
 public class ChoixJoueur extends JFrame {
 
@@ -18,33 +23,76 @@ public class ChoixJoueur extends JFrame {
 	 */
 	private JPanel contentPane;
 	/**
+	 * nombre de personnages
+	 */
+	private static final int NBPERSO = 3;
+	/**
 	 * zone de saisie du pseudo
 	 */
 	private JTextField txtPseudo;
 	/**
+	 * label personnage
+	 */
+	private JLabel lblPersonnage;
+	/**
+	 * communication avec controle
+	 */
+	private Controle Controle;
+	/**
+	 * numero personnage selectionné
+	 */
+	private int numPerso;
+	/**
 	 * clic sur la flèche précédent pour afficher le personnage précédent
 	 */
 	private void lblPrecedent_clic() {
-		System.out.println("clic sur precedent");
+		numPerso = ((numPerso+1)%NBPERSO)+1;
+		this.affichePerso();
 	}
 	/**
 	 * clic sur la flèche suivant pour afficher le personnage suivant
 	 */
 	private void lblSuivant_clic() {
-		System.out.println("clic sur suivant");
+		numPerso = (numPerso%NBPERSO)+1; 
+		this.affichePerso();		
 	}
 	/**
 	 * clic sur GO pour envoyer les informations
 	 */
 	private void lblGo_clic() {
-		(new Arene()).setVisible(true);
-		this.dispose();
+		if (this.txtPseudo.getText().equals("")) {
+			JOptionPane.showMessageDialog(null, "La saisie du pseudo est obligatoire");
+			txtPseudo.requestFocus();
+		}
+		else {
+			this.Controle.evenementChoixJoueur(this.txtPseudo.getText(), numPerso);
+		}
+	}
+	/**
+	 * affichage du personnage depuis la galerie
+	 */
+	private void affichePerso() {
+		String chemin = "personnages/perso"+ this.numPerso + "marche" + 1 + "d" + 1 + ".gif";
+		URL resource = getClass().getClassLoader().getResource(chemin);
+		this.lblPersonnage.setIcon(new ImageIcon(resource));
+	}
+	/**
+	 * affichage souris normale
+	 */
+	public void sourisNormale() {
+		contentPane.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+	}
+	/**
+	 * affichage de la souris doigt pointe
+	 */
+	public void sourisDoigt() {
+		contentPane.setCursor(new Cursor(Cursor.HAND_CURSOR));
 	}
 
 	/**
 	 * Create the frame.
 	 */
-	public ChoixJoueur() {
+	public ChoixJoueur(Controle Controle) {
 		//dimension de la frame en fonction de la taille de l'image
 		this.getContentPane().setPreferredSize(new Dimension(400, 275));
 		this.pack();
@@ -57,11 +105,24 @@ public class ChoixJoueur extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
+		lblPersonnage = new JLabel("");
+		lblPersonnage.setBounds(142, 115, 120, 120);
+		lblPersonnage.setHorizontalAlignment(SwingConstants.CENTER);
+		contentPane.add(lblPersonnage);
+		
 		JLabel lblPrecedent = new JLabel("");
 		lblPrecedent.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
 				lblPrecedent_clic();
+			}
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				sourisDoigt();
+			}
+			@Override
+			public void mouseExited(MouseEvent e) {
+				sourisNormale();
 			}
 		});
 		
@@ -71,6 +132,14 @@ public class ChoixJoueur extends JFrame {
 			public void mouseClicked(MouseEvent e) {
 				lblSuivant_clic();
 			}
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				sourisDoigt();
+			}
+			@Override
+			public void mouseExited(MouseEvent e) {
+				sourisNormale();
+			}
 		});
 		
 		JLabel lblGo = new JLabel("");
@@ -78,6 +147,14 @@ public class ChoixJoueur extends JFrame {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				lblGo_clic();
+			}
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				sourisDoigt();
+			}
+			@Override
+			public void mouseExited(MouseEvent e) {
+				sourisNormale();
 			}
 		});
 		
@@ -99,9 +176,15 @@ public class ChoixJoueur extends JFrame {
 		contentPane.add(lblPrecedent);
 		lblSuivant.setBounds(301, 145, 25, 46);
 		contentPane.add(lblSuivant);
-		
+					
 		//positionnement sur la zone de saisie
 		txtPseudo.requestFocus();
+		
+		//recuperation de l'instance de controle
+		this.Controle = Controle;
+		
+		//appel de la methode affichePerso pour afficher le premier personnage
+		this.numPerso = 1;
+		this.affichePerso();
 	}
-
 }
