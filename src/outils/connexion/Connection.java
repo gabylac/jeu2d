@@ -83,7 +83,7 @@ public class Connection extends Thread {
 				// réception d'un objet sur le canal d'entrée
 				reception = in.readObject();
 				// envoi de l'information reçue vers la classe qui implémente AsyncResponse pour récupérer la réponse
-				delegate.reception(this, "réception", reception);
+				delegate.reception(this, "reception", reception);
 			} catch (ClassNotFoundException e) {
 				// problème grave qui ne devrait pas se produire : arrêt du programme
 				System.out.println("erreur de classe sur réception : "+e);

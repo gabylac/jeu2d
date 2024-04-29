@@ -3,7 +3,7 @@ package vue;
 import javax.swing.ImageIcon;
 import java.net.URL;
 
-
+import controler.Global;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import java.awt.Dimension;
@@ -12,7 +12,7 @@ import javax.swing.JTextArea;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 
-public class Arene extends JFrame {
+public class Arene extends JFrame implements Global {
 
 	/**
 	 * panel general
@@ -43,8 +43,7 @@ public class Arene extends JFrame {
 		
 		JLabel lblFond = new JLabel("");
 		lblFond.setBounds(0, 0, 800, 600);
-		String chemin = "fonds/fondarene.jpg";
-		URL resource = getClass().getClassLoader().getResource(chemin);
+		URL resource = getClass().getClassLoader().getResource(FONDARENE);
 		lblFond.setIcon(new ImageIcon(resource));
 		contentPane.add(lblFond);
 		

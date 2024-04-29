@@ -15,17 +15,14 @@ import java.awt.Cursor;
 import javax.swing.JOptionPane;
 
 import controler.Controle;
+import controler.Global;
 
-public class ChoixJoueur extends JFrame {
+public class ChoixJoueur extends JFrame implements Global {
 
 	/**
 	 * panel général
 	 */
 	private JPanel contentPane;
-	/**
-	 * nombre de personnages
-	 */
-	private static final int NBPERSO = 3;
 	/**
 	 * zone de saisie du pseudo
 	 */
@@ -160,8 +157,7 @@ public class ChoixJoueur extends JFrame {
 		
 		JLabel lblFond = new JLabel("");
 		lblFond.setBounds(0, 0, 400, 275);
-		String chemin = "fonds/fondchoix.jpg";
-		URL resource = getClass().getClassLoader().getResource(chemin);
+		URL resource = getClass().getClassLoader().getResource(FONDCHOIX);
 		lblFond.setIcon(new ImageIcon(resource));
 		contentPane.add(lblFond);
 		
