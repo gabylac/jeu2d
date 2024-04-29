@@ -57,5 +57,45 @@ public interface Global {
 	 * chemin du fond choix joueur
 	 */
 	String FONDCHOIX = CHEMINFONDS + "fondchoix.jpg";
+	/**
+	 * nombre de murs
+	 */
+	int NBMUR = 20;
+	/**
+	 * largeur mur
+	 */
+	int LARGEURMUR = 34;
+	/**
+	 * hauteur mur
+	 */
+	int HAUTEURMUR = 35;
+	/**
+	 * largeur arene
+	 */
+	int LARGEURARENE = 800;
+	/**
+	 * hauteur arene
+	 */
+	int HAUTEURARENE = 600;
+	/**
+	 * chemin du dossier mur
+	 */
+	String CHEMINMUR = "murs"+ CHEMINSEPARATOR;
+	/**
+	 * chemin de recup image du mur
+	 */
+	String MUR = CHEMINMUR + "mur.gif";
+	/**
+	 * ajouter un mur dans arene serveur
+	 */
+	String AJOUTMUR = "ajout mur";
+	/**
+	 * serveur
+	 */
+	String SERVEUR = "serveur";
+	/**
+	 * ajout du panel mur au client
+	 */
+	String AJOUTPANELMURS = "ajout panel murs";
 	
 }

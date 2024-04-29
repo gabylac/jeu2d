@@ -88,6 +88,7 @@ public class ChoixJoueur extends JFrame implements Global {
 
 	/**
 	 * Create the frame.
+	 * @param controle
 	 */
 	public ChoixJoueur(Controle Controle) {
 		//dimension de la frame en fonction de la taille de l'image

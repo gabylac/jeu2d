@@ -46,6 +46,7 @@ public class entreeJeu extends JFrame {
 	}
 	/**
 	 * Create the frame.
+	 * @param controle
 	 */
 	public entreeJeu(Controle Controle) {
 		setResizable(false);

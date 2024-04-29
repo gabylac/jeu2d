@@ -10,6 +10,7 @@ import outils.connexion.ClientSocket;
 import modele.Jeu;
 import modele.JeuServeur;
 import modele.JeuClient;
+import javax.swing.JPanel;
 
 /**
  * Contrôleur et point d'entrée de l'applicaton 
@@ -39,11 +40,12 @@ public class Controle implements AsyncResponse, Global {
 		this.frmEntreeJeu.setVisible(true);
 	}
 	public void evenementEntreeJeu(String info) {
-		if (info.equals("serveur")) {
+		if (info.equals(SERVEUR)) {
 			new ServeurSocket(this, PORT);
 			this.leJeu = new JeuServeur(this);
 			this.frmEntreeJeu.dispose();
 			this.frmArene = new Arene();
+			((JeuServeur)this.leJeu).constructionMurs();
 			this.frmArene.setVisible(true);
 		}
 		else {
@@ -55,6 +57,23 @@ public class Controle implements AsyncResponse, Global {
 		this.frmArene.setVisible(true);
 		((JeuClient)this.leJeu).envoi(PSEUDO+STRINGSEPARE+pseudo+STRINGSEPARE+numPerso);
 	}
+	public void evenementJeuServeur(String unOrdre, Object info) {
+		switch (unOrdre){
+		case AJOUTMUR:
+			frmArene.ajoutMur(info);
+			break;
+		case AJOUTPANELMURS:
+			this.leJeu.envoi((Connection)info, this.frmArene.getJpnMurs());
+			break;
+		}
+	}
+	public void evenementJeuClient(String unOrdre, Object info) {
+		switch (unOrdre) {
+		case AJOUTPANELMURS:
+			this.frmArene.setJpnMurs((JPanel)info);
+			break;
+		}
+	}
 	public void envoi(Connection connection, Object info) {
 		connection.envoi(info);
 	}
@@ -63,7 +82,7 @@ public class Controle implements AsyncResponse, Global {
 	public void reception(Connection connection, String ordre, Object info) {
 		// TODO Auto-generated method stub
 		switch (ordre) {
-		case (CONNEXION):
+		case CONNEXION:
 			if (!(this.leJeu instanceof JeuServeur)) {
 				this.leJeu = new JeuClient(this);
 				this.leJeu.connexion(connection);
@@ -76,11 +95,12 @@ public class Controle implements AsyncResponse, Global {
 				this.leJeu.connexion(connection);
 			}
 			break;
-		case (RECEPTION):
+		case RECEPTION:
 			this.leJeu.reception(connection, info);
 			break;
-		case (DECONNEXION):
+		case DECONNEXION:
 			break;
 		}
 	}
+	
 }
