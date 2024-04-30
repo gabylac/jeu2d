@@ -97,5 +97,45 @@ public interface Global {
 	 * ajout du panel mur au client
 	 */
 	String AJOUTPANELMURS = "ajout panel murs";
+	/**
+	 * largeur de l'image personnage
+	 */
+	int LARGEURPERSO = 39;
+	/**
+	 * hauteur de l'image du personnage
+	 */
+	int HAUTEURPERSO = 44;
+	/**
+	 * hauteur du message sous le personnage
+	 */
+	int HAUTEURMESSAGE = 8;
+	/**
+	 * ajout d'un jlabel jeu
+	 */
+	String AJOUTJLABELJEU = "ajout jLabel jeu";
+	/**
+	 * etat joueur marche
+	 */
+	String MARCHE = "marche";
+	/**
+	 * etat joueur mort
+	 */
+	String MORT = "mort";
+	/**
+	 * etat joueur touche
+	 */
+	String TOUCHE = "touche";
+	/**
+	 * orientation joueur droite
+	 */
+	int DROITE = 1;
+	/**
+	 * orientation joueur gauche
+	 */
+	int GAUCHE = 0;
+	/**
+	 * modification du panel jeu dans l'arene client
+	 */
+	String MODIFPANELJEU = "modification du panel jeu";
 	
 }

@@ -28,6 +28,10 @@ public class Arene extends JFrame implements Global {
 	 */
 	private JTextField txtSaisie;
 	/**
+	 * creation du panel jeu contenant joueurs et boule
+	 */
+	private JPanel jpnJeu;
+	/**
 	 * création panel mur
 	 */
 	private JPanel jpnMurs;
@@ -47,11 +51,30 @@ public class Arene extends JFrame implements Global {
 		this.jpnMurs.repaint();
 	}
 	/**
+	 * getter sur panel du jeu
+	 * @return jpnJeu
+	 */
+	public JPanel getJpnJeu() {
+		return jpnJeu;
+	}
+	/**
+	 * setter sur panel jeu 
+	 */
+	public void setJpnJeu(JPanel jpnJeu) {
+		this.jpnJeu.removeAll();
+		this.jpnJeu.add(jpnJeu);
+		this.jpnJeu.repaint();
+	}
+	/**
 	 * methode ajout  mur
 	 */
 	public void ajoutMur(Object unMur) {
 		jpnMurs.add((JLabel)unMur);
 		jpnMurs.repaint();
+	}
+	public void ajoutJLabelJeu(JLabel unJLabel) {
+		jpnJeu.add((JLabel)unJLabel);
+		jpnJeu.repaint();
 	}
 
 	/**
@@ -66,6 +89,12 @@ public class Arene extends JFrame implements Global {
 		contentPane = new JPanel();
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
+		
+		jpnJeu = new JPanel();
+		jpnJeu.setBounds(0, 0, LARGEURARENE, HAUTEURARENE);
+		jpnJeu.setOpaque(false);
+		jpnJeu.setLayout(null);
+		contentPane.add(jpnJeu);
 		
 		jpnMurs = new JPanel();
 		jpnMurs.setBounds(0, 0, LARGEURARENE, HAUTEURARENE);

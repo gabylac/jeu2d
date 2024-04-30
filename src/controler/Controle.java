@@ -11,6 +11,7 @@ import modele.Jeu;
 import modele.JeuServeur;
 import modele.JeuClient;
 import javax.swing.JPanel;
+import javax.swing.JLabel;
 
 /**
  * Contrôleur et point d'entrée de l'applicaton 
@@ -65,12 +66,21 @@ public class Controle implements AsyncResponse, Global {
 		case AJOUTPANELMURS:
 			this.leJeu.envoi((Connection)info, this.frmArene.getJpnMurs());
 			break;
+		case AJOUTJLABELJEU:
+			this.frmArene.ajoutJLabelJeu((JLabel)info);
+			break;
+		case MODIFPANELJEU:
+			this.leJeu.envoi((Connection)info, this.frmArene.getJpnJeu());
+			break;
 		}
 	}
 	public void evenementJeuClient(String unOrdre, Object info) {
 		switch (unOrdre) {
 		case AJOUTPANELMURS:
 			this.frmArene.setJpnMurs((JPanel)info);
+			break;
+		case MODIFPANELJEU:
+			this.frmArene.setJpnJeu((JPanel)info);
 			break;
 		}
 	}

@@ -5,6 +5,7 @@ import controler.Global;
 import controler.Controle;
 import java.util.Hashtable;
 import outils.connexion.Connection;
+import javax.swing.JLabel;
 
 /**
  * Gestion du jeu côté serveur
@@ -31,7 +32,7 @@ public class JeuServeur extends Jeu implements Global {
 	
 	@Override
 	public void connexion(Connection connection) {
-		this.lesJoueurs.put(connection, new Joueur());
+		this.lesJoueurs.put(connection, new Joueur(this));
 	}
 
 	@Override
@@ -43,7 +44,7 @@ public class JeuServeur extends Jeu implements Global {
 			controle.evenementJeuServeur(AJOUTPANELMURS, connection);
 			String pseudo = infos[1];
 			int numPerso = Integer.parseInt(infos[2]);
-			this.lesJoueurs.get(connection).initPerso(pseudo, numPerso);
+			this.lesJoueurs.get(connection).initPerso(pseudo, numPerso, this.lesJoueurs.values(), this.lesMurs);
 			break;
 		}
 	}
@@ -51,12 +52,26 @@ public class JeuServeur extends Jeu implements Global {
 	@Override
 	public void deconnexion() {
 	}
+	/**
+	 * envoie ordre d'ajouter jlabeljeu a arene
+	 */
+	public void ajoutJLabelJeuArene(JLabel jLabel) {
+		this.controle.evenementJeuServeur(AJOUTJLABELJEU, jLabel);
+	}
 
 	/**
 	 * Envoi d'une information vers tous les clients
 	 * fais appel plusieurs fois à l'envoi de la classe Jeu
 	 */
 	public void envoi() {
+	}
+	/**
+	 * envoie ordre et connexion du joueur
+	 */
+	public void envoiJeuATous() {
+		for (Connection connection : this.lesJoueurs.keySet()) {
+			this.controle.evenementJeuServeur(MODIFPANELJEU, connection);
+		}
 	}
 
 	/**

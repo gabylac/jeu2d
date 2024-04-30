@@ -16,6 +16,10 @@ public class JeuClient extends Jeu implements Global {
 	 */
 	private Connection connection;
 	/**
+	 * propriété qui initialise vrai quand les murs ont été créés la première fois 
+	 */
+	private boolean mursOK = false;
+	/**
 	 * Controleur
 	 * @param controle
 	 */
@@ -31,7 +35,12 @@ public class JeuClient extends Jeu implements Global {
 	@Override
 	public void reception(Connection connection, Object info) {
 		if (info instanceof JPanel) {
-			this.controle.evenementJeuClient(AJOUTPANELMURS, info);
+			if (!this.mursOK) {
+				this.controle.evenementJeuClient(AJOUTPANELMURS, info);
+				this.mursOK = true;
+			}else {
+				this.controle.evenementJeuClient(MODIFPANELJEU, info);
+			}
 		}
 	}
 	

@@ -1,10 +1,20 @@
 package modele;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import controler.Global;
+
+import javax.swing.ImageIcon;
+import javax.swing.JLabel;
+import java.awt.Font;
+import java.net.URL;
+
+import javax.swing.SwingConstants;
 /**
  * Gestion des joueurs
  *
  */
-public class Joueur extends Objet {
+public class Joueur extends Objet implements Global {
 
 	/**
 	 * pseudo saisi
@@ -26,11 +36,27 @@ public class Joueur extends Objet {
 	 * la boule du joueur
 	 */
 	private Boule boule ;
-	
+	/**
+	 * message sous le joueur
+	 */
+	private JLabel message;
+	/**
+	 * orientation du personnage
+	 */
+	private int orientation;
+	/**
+	 * vie du joueur 
+	 */
+	private int vie;
+		
 	/**
 	 * Constructeur
 	 */
-	public Joueur() {
+	public Joueur(JeuServeur jeuServeur) {
+		this.jeuServeur = jeuServeur;
+		this.vie = MAXVIE;
+		this.etape = 1;
+		this.orientation = DROITE;
 	}
 
 	/**
@@ -38,22 +64,42 @@ public class Joueur extends Objet {
 	 * @param pseudo
 	 * @param numPerso
 	 */
-	public void initPerso(String pseudo, int numPerso) {
+	public void initPerso(String pseudo, int numPerso, Collection<Joueur>lesJoueurs, ArrayList<Mur>lesMurs) {
 		this.pseudo = pseudo;
 		this.numPerso = numPerso;
 		System.out.println("joueur" + pseudo + "- num perso"+ numPerso + " créé");
+		super.jLabel = new JLabel();
+		this.message = new JLabel();
+		message.setHorizontalAlignment(SwingConstants.CENTER);
+		message.setFont(new Font("Dialog", Font.PLAIN, 8));
+		this.premierePosition(lesJoueurs, lesMurs);
+		this.jeuServeur.ajoutJLabelJeuArene(jLabel);
+		this.jeuServeur.ajoutJLabelJeuArene(message);
+		this.affiche(MARCHE, this.etape);
 	}
 
 	/**
 	 * Calcul de la première position aléatoire du joueur (sans chevaucher un autre joueur ou un mur)
 	 */
-	private void premierePosition() {
+	private void premierePosition(Collection<Joueur>lesJoueurs, ArrayList<Mur>lesMurs) {
+		jLabel.setBounds(0,0, LARGEURPERSO, HAUTEURPERSO);
+		do {
+			posX = (int)Math.round(Math.random()*(LARGEURARENE-LARGEURPERSO));
+			posY = (int)Math.round(Math.random()*(HAUTEURARENE-HAUTEURPERSO-HAUTEURMESSAGE));
+		}while (this.toucheJoueur(lesJoueurs) || this.toucheMur(lesMurs));
 	}
 	
 	/**
 	 * Affiche le personnage et son message
 	 */
-	public void affiche() {
+	public void affiche(String etatJoueur,int etape) {
+		super.jLabel.setBounds(posX, posY, LARGEURPERSO, HAUTEURPERSO);
+		String chemin = "personnages/perso"+ this.numPerso + etatJoueur + etape + "d" + this.orientation + ".gif";
+		URL resource = getClass().getClassLoader().getResource(chemin);
+		super.jLabel.setIcon(new ImageIcon(resource));
+		this.message.setBounds(posX-10, posY+HAUTEURPERSO,LARGEURPERSO+10, HAUTEURMESSAGE);
+		this.message.setText(pseudo + ":" + vie);
+		this.jeuServeur.envoiJeuATous();
 	}
 
 	/**
@@ -72,8 +118,27 @@ public class Joueur extends Objet {
 	 * Contrôle si le joueur touche un des autres joueurs
 	 * @return true si deux joueurs se touchent
 	 */
-	private Boolean toucheJoueur() {
-		return null;
+	private Boolean toucheJoueur(Collection<Joueur>lesJoueurs) {
+		for (Joueur joueur: lesJoueurs) {
+			if (!this.equals(joueur)) {
+				if (super.toucheObjet(joueur)) {
+					return true;
+				}
+			}
+		}
+		return false;		
+	}
+	/**
+	 * controle si le joueur touche un mur
+	 * @return true si le joueur touche un mur
+	 */
+	private Boolean toucheMur(ArrayList<Mur> lesMurs) {
+		for (Mur unMur: lesMurs) {
+			if (super.toucheObjet(unMur)) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	/**
