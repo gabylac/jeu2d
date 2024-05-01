@@ -137,5 +137,20 @@ public interface Global {
 	 * modification du panel jeu dans l'arene client
 	 */
 	String MODIFPANELJEU = "modification du panel jeu";
-	
+	/**
+	 * ordre tchat
+	 */
+	String TCHAT = "tchat";
+	/**
+	 * ajout de phrase
+	 */
+	String AJOUTPHRASE = "ajout phrase";
+	/**
+	 * modif du tchat
+	 */
+	String MODIFTCHAT = "modif du tchat";
+	/**
+	 * jeu client
+	 */
+	String CLIENT = "client";
 }

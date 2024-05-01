@@ -11,6 +11,9 @@ import javax.swing.JLabel;
 import javax.swing.JTextArea;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
+import java.awt.event.KeyEvent;
+import controler.Controle;
+import java.awt.event.KeyAdapter;
 
 public class Arene extends JFrame implements Global {
 
@@ -24,6 +27,24 @@ public class Arene extends JFrame implements Global {
 	 */
 	private JTextArea txtChat;
 	/**
+	 * controle
+	 */
+	private Controle controle;
+	/**
+	 * @return txtChat
+	 */
+	public String getTxtChat() {
+		return txtChat.getText();
+	}
+	/**
+	 *setter sur txtChat
+	 * @param txtChat
+	 */
+	public void setTxtChat(String texte) {
+		this.txtChat.setText(texte);
+		this.txtChat.setCaretPosition(this.txtChat.getDocument().getLength());
+	}
+	/**
 	 * zone de saisie du t'chat
 	 */
 	private JTextField txtSaisie;
@@ -35,6 +56,10 @@ public class Arene extends JFrame implements Global {
 	 * création panel mur
 	 */
 	private JPanel jpnMurs;
+	/**
+	 * creation propriete client pour verifier si client
+	 */
+	private Boolean client;
 	/**
 	 * getter sur panel mur
 	 * @return jpnMurs
@@ -76,11 +101,33 @@ public class Arene extends JFrame implements Global {
 		jpnJeu.add((JLabel)unJLabel);
 		jpnJeu.repaint();
 	}
+	/**
+	 * ajoute le texte au chat
+	 * @param texte
+	 */
+	public void ajoutTchat(String phrase) {
+		this.txtChat.setText(this.txtChat.getText()+phrase+"\r\n");
+		this.txtChat.setCaretPosition(this.txtChat.getDocument().getLength());
+	}
+	/**
+	 * ajout evenement keyPress sur txtSaisie
+	 */
+	public void txtSaisie_KeyPressed(KeyEvent e) {
+		if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+			if (! this.txtSaisie.getText().equals("")) {
+				this.controle.evenementArene(this.txtSaisie.getText());
+				this.txtSaisie.setText("");
+			}
+		}
+	}
 
 	/**
 	 * Create the frame.
+	 * @param controle instance du controleur
+	 * @param typejeu si jeu client ou jeu serveur
 	 */
-	public Arene() {
+	public Arene(Controle controle, String typeJeu) {
+		this.client = typeJeu.equals(CLIENT);
 		setTitle("Arene");
 		this.getContentPane().setPreferredSize(new Dimension(800, 600 + 25 + 140));
 		this.pack();
@@ -114,13 +161,22 @@ public class Arene extends JFrame implements Global {
 		contentPane.add(jspChat);
 		
 		txtChat = new JTextArea();
+		txtChat.setEditable(false);
 		jspChat.setViewportView(txtChat);
 		
-		txtSaisie = new JTextField();
-		txtSaisie.setBounds(0, 600, 800, 25);
-		contentPane.add(txtSaisie);
-		txtSaisie.setColumns(10);
+		if (this.client) {
+			txtSaisie = new JTextField();
+			txtSaisie.addKeyListener(new KeyAdapter(){
+				@Override
+				public void keyPressed(KeyEvent e) {
+					txtSaisie_KeyPressed(e);
+				}
+			});
+			txtSaisie.setBounds(0, 600, 800, 25);
+			contentPane.add(txtSaisie);
+			txtSaisie.setColumns(10);
+		}
 		
-		
+		this.controle = controle;
 	}
 }

@@ -48,6 +48,13 @@ public class Joueur extends Objet implements Global {
 	 * vie du joueur 
 	 */
 	private int vie;
+	/**
+	 * getter sur pseudo
+	 * @return pseudo
+	 */
+	public String getPseudo() {
+		return pseudo;
+	}
 		
 	/**
 	 * Constructeur
