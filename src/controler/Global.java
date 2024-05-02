@@ -153,4 +153,17 @@ public interface Global {
 	 * jeu client
 	 */
 	String CLIENT = "client";
+	/**
+	 * ordre d'action
+	 */
+	String ACTION = "action";
+	/**
+	 * valeur du pas
+	 */
+	int PAS = 10;
+	/**
+	 * nombre etapes de marche
+	 */
+	int NBETAPESMARCHE = 4;
+	
 }

@@ -10,6 +10,7 @@ import java.awt.Font;
 import java.net.URL;
 
 import javax.swing.SwingConstants;
+import java.awt.event.KeyEvent;
 /**
  * Gestion des joueurs
  *
@@ -112,14 +113,53 @@ public class Joueur extends Objet implements Global {
 	/**
 	 * Gère une action reçue et qu'il faut afficher (déplacement, tire de boule...)
 	 */
-	public void action() {
+	public void action(Integer action, Collection<Joueur>lesJoueurs, ArrayList<Mur>lesMurs) {
+		switch (action) {
+		case KeyEvent.VK_LEFT :
+			orientation = GAUCHE;
+			posX = deplace(posX, action, - PAS, LARGEURARENE - LARGEURPERSO, lesJoueurs, lesMurs);
+			break;
+		case KeyEvent.VK_RIGHT :
+			orientation = DROITE;
+			posX = deplace(posX, action, PAS, LARGEURARENE - LARGEURPERSO, lesJoueurs, lesMurs);
+			break;
+		case KeyEvent.VK_UP :
+			posY = deplace(posY, action, - PAS, HAUTEURARENE - HAUTEURPERSO - HAUTEURMESSAGE, lesJoueurs, lesMurs);
+			break;
+		case KeyEvent.VK_DOWN : 
+			posY = deplace(posY, action, PAS, HAUTEURARENE - HAUTEURPERSO - HAUTEURMESSAGE, lesJoueurs, lesMurs);
+			break;
+		}
+		this.affiche(MARCHE, this.etape);
+			
 	}
 
 	/**
 	 * Gère le déplacement du personnage
+	 * @param position = position de depart
+	 * @param action = action de depalcement gauche droite haut bas
+	 * @param lepas = distance du pas parcouru
+	 * @param lesJoueurs = les joueurs présents dans l'arene
+	 * @param lesMurs  =les murs présents dans l'arene
+	 * @return nouvelle position du joueur
 	 */
-	private void deplace() { 
+	private int deplace(int position, int action, int lepas, int max, Collection<Joueur>lesJoueurs, ArrayList<Mur>lesMurs) {
+		int ancpos = position;
+		position += lepas;
+		position = Math.max(position, 0);
+		position = Math.min(position, max);
+		if (action==KeyEvent.VK_LEFT || action==KeyEvent.VK_RIGHT){
+			posX = position;
+		}else {
+			posY = position;
+		}
+		if (toucheJoueur(lesJoueurs) || toucheMur(lesMurs)) {
+			position = ancpos;
+		}
+		etape = (etape % NBETAPESMARCHE)+1;
+		return position;
 	}
+
 
 	/**
 	 * Contrôle si le joueur touche un des autres joueurs

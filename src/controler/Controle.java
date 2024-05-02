@@ -91,8 +91,13 @@ public class Controle implements AsyncResponse, Global {
 			break;
 		}
 	}
-	public void evenementArene(String info) {
+	public void evenementArene(Object info) {
+		if (info instanceof String) {
 		((JeuClient)this.leJeu).envoi(TCHAT+STRINGSEPARE+info);
+		}
+		else if (info instanceof Integer) {
+			((JeuClient)this.leJeu).envoi(ACTION+STRINGSEPARE+info);
+		}
 	}
 	public void envoi(Connection connection, Object info) {
 		connection.envoi(info);
