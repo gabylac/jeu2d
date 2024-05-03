@@ -1,5 +1,7 @@
 package modele;
 
+import java.util.Collection;
+
 import javax.swing.JLabel;
 
 /**
@@ -27,6 +29,18 @@ public abstract class Objet {
 	public JLabel getjLabel() {
 		return jLabel;
 	}
+	/**
+	 * @return posX
+	 */
+	public Integer getPosX() {
+		return posX;
+	}
+	/**
+	 * @return posY
+	 */
+	public Integer getPosY() {
+		return posY;
+	}
 	
 	/**
 	 * contrôle si l'objet actuel touche l'objet passé en paramètre
@@ -39,6 +53,19 @@ public abstract class Objet {
 		}else {
 			return (this.posX+this.jLabel.getWidth()>objet.posX && this.posX<objet.posX+objet.jLabel.getWidth() && this.posY+this.jLabel.getHeight()>objet.posY && this.posY<objet.posY+objet.jLabel.getHeight());
 		}
+	}
+	/**
+	*methode touche collection objet mur et joueur et boule
+	*/
+	public Objet toucheCollectionObjet (Collection<Objet> lesObjets) {
+		for (Objet unObjet: lesObjets) {
+			if (!unObjet.equals(this)) {
+				if (toucheObjet(unObjet)) {
+					return unObjet;
+				}
+			}
+		}
+		return null;
 	}
 	
 }

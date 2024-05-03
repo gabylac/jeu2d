@@ -165,5 +165,22 @@ public interface Global {
 	 * nombre etapes de marche
 	 */
 	int NBETAPESMARCHE = 4;
+	/**
+	 * largeur boule
+	 */
+	int LARGEURBOULE = 17;
+	/**
+	 * hauteur boule
+	 */
+	int HAUTEURBOULE = 17;
+	/**
+	 * nombre d'etape de touche
+	 */
+	int NBETAPESTOUCHE = 2;
+	/**
+	 * nombre etape de mort
+	 */
+	int NBETAPESMORT = 2;
+	
 	
 }
