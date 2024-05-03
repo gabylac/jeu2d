@@ -181,6 +181,27 @@ public interface Global {
 	 * nombre etape de mort
 	 */
 	int NBETAPESMORT = 2;
+	/**
+	 * tableau des sons tire boule, joueur touche et joueur mort
+	 */
+	String SON[]= {"sons/fight" + ".wav", "sons/hurt" + ".wav", "sons/death" + ".wav"};
+	/**
+	 * son tire boule
+	 */
+	int FIGHT = 0;
+	/**
+	 * son touche
+	 */
+	int HURT = 1;
+	/**
+	 * son mort
+	 */
+	int DEATH = 2;
+	/**
+	 * ordre jouer un son
+	 */
+	String JOUER = "jouer";
+	
 	
 	
 }

@@ -26,6 +26,7 @@ public class Boule extends Objet implements Global, Runnable{
 	
 	/**
 	 * Constructeur
+	 * @param jeuServeur recoit ordre du serveur
 	 */
 	public Boule(JeuServeur jeuServeur) {
 		this.jeuServeur = jeuServeur;
@@ -40,6 +41,8 @@ public class Boule extends Objet implements Global, Runnable{
 	
 	/**
 	 * Tire d'une boule
+	 * @param attaquant envoi la boule
+	 * @param lesMurs susceptible de recevoir la boule (collision)
 	 */
 	public void tireBoule(Joueur attaquant, Collection lesMurs) {
 		this.attaquant = attaquant;
@@ -56,6 +59,7 @@ public class Boule extends Objet implements Global, Runnable{
 	public void run() {
 		this.attaquant.affiche(MARCHE, 1);
 		super.jLabel.setVisible(true);
+		this.jeuServeur.envoi(FIGHT);
 		Joueur victime = null;
 		int lePas;
 		if (attaquant.getOrientation()== DROITE) {
@@ -71,6 +75,7 @@ public class Boule extends Objet implements Global, Runnable{
 			victime= (Joueur)super.toucheCollectionObjet(lesJoueurs);
 		}while (posX >= 0 && posX <= LARGEURARENE && victime == null && this.toucheCollectionObjet(lesMurs)== null);
 		if (victime != null && !victime.estMort()) {
+			this.jeuServeur.envoi(HURT);
 			victime.perteVie();
 			attaquant.gainVie();
 			for (int k=1; k<= NBETAPESTOUCHE; k++) {
@@ -78,6 +83,7 @@ public class Boule extends Objet implements Global, Runnable{
 				pause(80, 0);
 			}
 			if (victime.estMort()) {
+				this.jeuServeur.envoi(DEATH);
 				for (int k=1; k<= NBETAPESMORT; k++) {
 					victime.affiche(MORT,  k);
 					pause(80, 0);
@@ -90,6 +96,11 @@ public class Boule extends Objet implements Global, Runnable{
 		// envoyer le nouveau jeu à tous
 		this.jeuServeur.envoiJeuATous();
 	}
+	/**
+	 * rallonge du temps de l'evenement
+	 * @param milliseconde
+	 * @param nanoseconde
+	 */
 	public void pause(long milliseconde, int nanoseconde) {
 		try {
 			Thread.sleep(milliseconde, nanoseconde);

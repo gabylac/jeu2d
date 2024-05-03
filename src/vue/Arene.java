@@ -14,6 +14,7 @@ import javax.swing.JTextField;
 import java.awt.event.KeyEvent;
 import controler.Controle;
 import java.awt.event.KeyAdapter;
+import outils.son.Son;
 
 public class Arene extends JFrame implements Global {
 
@@ -30,6 +31,10 @@ public class Arene extends JFrame implements Global {
 	 * controle
 	 */
 	private Controle controle;
+	/**
+	 * tableau des sons
+	 */
+	private Son[] lesSons = new Son[SON.length];
 	/**
 	 * @return txtChat
 	 */
@@ -141,6 +146,12 @@ public class Arene extends JFrame implements Global {
 			this.controle.evenementArene(touche);
 		}
 	}
+	/**
+	 * joue le son qui convient
+	 */
+	public void joueSon(Integer leSon) {
+		this.lesSons[leSon].play();
+	}
 
 	/**
 	 * Create the frame.
@@ -210,6 +221,11 @@ public class Arene extends JFrame implements Global {
 			txtSaisie.setColumns(10);
 		}
 		
+		if (this.client) {
+			for (int k=0; k < SON.length; k++) {
+				lesSons[k] = new Son(getClass().getClassLoader().getResource(SON[k]));
+			}
+		}
 		this.controle = controle;
 	}
 }

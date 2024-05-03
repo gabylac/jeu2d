@@ -16,6 +16,7 @@ import javax.swing.JOptionPane;
 
 import controler.Controle;
 import controler.Global;
+import outils.son.Son;
 
 public class ChoixJoueur extends JFrame implements Global {
 
@@ -40,18 +41,36 @@ public class ChoixJoueur extends JFrame implements Global {
 	 */
 	private int numPerso;
 	/**
+	 * son de bienvenue
+	 */
+	private Son sonBienvenue;
+	/**
+	 * son bouton GO
+	 */
+	private Son sonGo;
+	/**
+	 * son bouton precedent
+	 */
+	private Son sonPrecedent;
+	/**
+	 * son bouton suivant
+	 */
+	private Son sonSuivant;
+	/**
 	 * clic sur la flèche précédent pour afficher le personnage précédent
 	 */
 	private void lblPrecedent_clic() {
 		numPerso = ((numPerso+1)%NBPERSO)+1;
 		this.affichePerso();
+		sonPrecedent.play();
 	}
 	/**
 	 * clic sur la flèche suivant pour afficher le personnage suivant
 	 */
 	private void lblSuivant_clic() {
 		numPerso = (numPerso%NBPERSO)+1; 
-		this.affichePerso();		
+		this.affichePerso();
+		sonSuivant.play();
 	}
 	/**
 	 * clic sur GO pour envoyer les informations
@@ -64,6 +83,7 @@ public class ChoixJoueur extends JFrame implements Global {
 		else {
 			this.Controle.evenementChoixJoueur(this.txtPseudo.getText(), numPerso);
 		}
+		sonGo.play();
 	}
 	/**
 	 * affichage du personnage depuis la galerie
@@ -183,5 +203,11 @@ public class ChoixJoueur extends JFrame implements Global {
 		//appel de la methode affichePerso pour afficher le premier personnage
 		this.numPerso = 1;
 		this.affichePerso();
+		
+		sonBienvenue = new Son(getClass().getClassLoader().getResource("sons/welcome"+ ".wav"));
+		sonGo = new Son(getClass().getClassLoader().getResource("sons/go"+ ".wav"));
+		sonPrecedent = new Son(getClass().getClassLoader().getResource("sons/precedent"+ ".wav"));
+		sonSuivant = new Son(getClass().getClassLoader().getResource("sons/suivant"+ ".wav"));
+		sonBienvenue.play();
 	}
 }
